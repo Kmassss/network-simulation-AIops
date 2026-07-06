@@ -1,0 +1,66 @@
+command: show ip interface brief
+device: R2
+output:
+- intf: Ethernet0/0
+  ipaddr: 11.0.1.201
+  proto: up
+  status: up
+- intf: Ethernet0/1
+  ipaddr: 10.0.12.2
+  proto: up
+  status: up
+- intf: Ethernet0/2
+  ipaddr: 10.0.23.1
+  proto: up
+  status: up
+- intf: Ethernet0/3
+  ipaddr: unassigned
+  proto: up
+  status: up
+timestamp: '2026-05-31 23:53:17'
+type: dict
+
+command: show ip interface brief
+device: SW
+output:
+- intf: Ethernet0/0
+  ipaddr: 11.0.1.200
+  proto: up
+  status: up
+- intf: Ethernet0/1
+  ipaddr: 10.0.12.1
+  proto: up
+  status: up
+- intf: Ethernet0/2
+  ipaddr: 10.0.13.1
+  proto: up
+  status: up
+- intf: Ethernet0/3
+  ipaddr: unassigned
+  proto: up
+  status: up
+timestamp: '2026-05-31 23:53:17'
+type: dict
+
+command: show ip interface brief
+device: R3
+output:
+- intf: Ethernet0/0
+  ipaddr: 11.0.1.202
+  proto: up
+  status: up
+- intf: Ethernet0/1
+  ipaddr: 10.0.13.2
+  proto: up
+  status: up
+- intf: Ethernet0/2
+  ipaddr: 10.0.23.2
+  proto: up
+  status: up
+- intf: Ethernet0/3
+  ipaddr: unassigned
+  proto: up
+  status: up
+timestamp: '2026-05-31 23:53:17'
+type: dict
+

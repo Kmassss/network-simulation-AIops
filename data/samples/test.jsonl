@@ -1,0 +1,1 @@
+{"features": {"acl_match_by_protocol_port": {"icmp_any": 0,"tcp_22": 0,"tcp_80": 0,"tcp_443": 0,"tcp_8080": 12000,"tcp_9000": 0,"udp_9999": 0},"total_acl_matches": 12000,"total_input_packets": 90000,"total_output_packets": 100000,"total_input_errors": 0,"total_output_errors": 0,"total_crc_errors": 0,"up_devices": 3,"warning_devices": 0,"collect_failed_devices": 0}}
