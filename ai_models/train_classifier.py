@@ -44,21 +44,23 @@ def train_model():
 
     '''y为标签,即正确答案'''
     X, y = load_labeled_samples()
-    if not Path(model_save_path).exists():
-        '''模型尚未训练,进行训练'''
-        X, mean, std = features_adjustment(X)
-        model = TrafficClassifier(
-        input_dim=input_dim,
-        num_classes=num_classes,
-    )
-        model, optimizer_state = model_trainer(model=model, X=X, y=y)#训练，无需加载优化器状态
-    else:
-        '''继续训练模型'''
-        model, mean, std, optimizer_state = load_model(input_dim=input_dim, num_classes=num_classes, path=model_save_path)
-        X, mean, std = features_adjustment(X, mean=mean, std=std)#使用原有的平均数和标准差进行特征调整
-        model, optimizer_state = model_trainer(model=model, X=X, y=y, optimizer_state=optimizer_state)#训练，加载优化器状态
-    
-    save_model(model,mean,std,optimizer_state,model_save_path) #保存模型
-    return True
+    try:
+        if not Path(model_save_path).exists():
+            '''模型尚未训练,进行训练'''
+            X, mean, std = features_adjustment(X)
+            model = TrafficClassifier(
+            input_dim=input_dim,
+            num_classes=num_classes,
+        )
+            model, optimizer_state = model_trainer(model=model, X=X, y=y)#训练，无需加载优化器状态
+        else:
+            '''继续训练模型'''
+            model, mean, std, optimizer_state = load_model(input_dim=input_dim, num_classes=num_classes, path=model_save_path)
+            X, mean, std = features_adjustment(X, mean=mean, std=std)#使用原有的平均数和标准差进行特征调整
+            model, optimizer_state = model_trainer(model=model, X=X, y=y, optimizer_state=optimizer_state)#训练，加载优化器状态
+        save_model(model,mean,std,optimizer_state,model_save_path) #保存模型
+    except Exception as e:
+        return e
+    return "success"
 
     
