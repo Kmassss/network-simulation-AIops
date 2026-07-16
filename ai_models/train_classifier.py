@@ -38,12 +38,15 @@ def model_trainer(model, X,y,optimizer_state=None):
 
 
 
-def train_model():
+def train_model(path: str|None):
     input_dim = len(FEATURE_NAMES)
     num_classes = len(LABEL_MAP)
 
     '''y为标签,即正确答案'''
-    X, y = load_labeled_samples()
+    if path:
+        X, y = load_labeled_samples(path)#若有其他训练数据则需要传入文件路径作为参
+    else:
+        X, y = load_labeled_samples()
     try:
         if not Path(model_save_path).exists():
             '''模型尚未训练,进行训练'''
@@ -60,7 +63,7 @@ def train_model():
             model, optimizer_state = model_trainer(model=model, X=X, y=y, optimizer_state=optimizer_state)#训练，加载优化器状态
         save_model(model,mean,std,optimizer_state,model_save_path) #保存模型
     except Exception as e:
-        return e
-    return "success"
+        raise Exception
+    return { "result":"success"}
 
     

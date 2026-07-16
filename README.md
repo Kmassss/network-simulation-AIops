@@ -1,39 +1,68 @@
-# network-simulation-lab
+# Network Simulation AIOps Lab
 
-## 项目说明
+本项目是一个面向网络运维场景的 AIOps 实验项目，基于 EVE-NG 网络仿真环境、Python 自动化采集、Flask API、PyTorch 本地模型、Kafka 异步任务机制以及后续 Prometheus / Kubernetes / LLM Agent 能力，构建一个从“网络状态采集 → 数据样本构建 → 异常识别 → 任务异步处理 → 智能分析解释”的完整实验链路。
 
-本项目用于通过 Netmiko 登录 EVE-NG 模拟交换机，采集接口信息，并将采集结果保存到 output 目录。
+项目当前处于 AIOps 主线开发阶段，已完成基础网络自动化采集、样本构建、本地模型训练与 Flask 接口封装的初步实现，正在推进训练/推理任务异步化、Kafka 消息投递和 Agent 推理解耦。
 
-## 项目结构
+---
 
-app/main.py：主程序  
-config/deviceConf.yaml：设备连接信息  采集命令在main里，后续命令包装为函数以供调用
-output/：采集结果输出目录  
-Dockerfile：镜像构建文件  
-requirements.txt：Python依赖  
+## 1. 项目目标
 
-## 构建镜像
+本项目的目标不是单纯写一个网络脚本，而是逐步搭建一个贴近真实运维场景的 AIOps 原型系统。
 
-sudo nerdctl build -n k8s.io -t netops-collector:0.1 .
+主要目标包括：
 
-## 运行容器
+1. 使用 Python 自动化采集网络设备状态；
+2. 将网络接口、ACL、路由、设备状态等信息转换为结构化样本；
+3. 使用 PyTorch 训练基础异常识别模型；
+4. 使用 Flask 对外提供训练和推理接口；
+5. 使用进程池 / 任务锁 / Kafka 解耦耗时任务；
+6. 后续接入 Prometheus 与 Kubernetes 监控数据；
+7. 后续引入 LLM / Agent 对异常结果进行解释和处置建议生成。
 
-sudo nerdctl run --rm \
-  --net=host \
-  -v /root/network-simulation-lab/output:/workspace/output \
-  -it netops-collector:0.1 bash
+---
 
-## 常见问题
+## 2. 技术栈
 
-1. 如果容器无法访问 EVE-NG，优先检查网络，并尝试使用 --net=host。
-2. 如果 output 没有文件，检查挂载路径是否正确。
-3. 如果构建时拉取 python:3.11-slim 超时，检查 BuildKit 或 containerd 镜像源。
-4. 如果提示找不到 app/main.py，检查 Dockerfile 的 WORKDIR 和 COPY 路径。
+当前项目涉及以下技术：
 
-## 后续 Prometheus Exporter 改造方向
-1. 当前程序是一次性采集任务；
-2. 后续将基于 prometheus_client 暴露 /metrics 接口；
-3. 设备连接状态转换为 device_up；
-4. 命令执行状态转换为 command_success；
-5. 接口状态统计转换为 interface_up_total、interface_down_total；
-6. 后续可部署为 K8s Deployment。
+| 类型 | 技术 |
+|---|---|
+| 网络仿真 | EVE-NG、Cisco IOL |
+| 网络自动化 | Python、Netmiko |
+| Web API | Flask、Blueprint |
+| 机器学习 | PyTorch、MLP |
+| 数据处理 | JSONL、Pandas |
+| 异步任务 | ProcessPoolExecutor、任务锁 |
+| 消息队列 | Kafka、confluent-kafka |
+| 容器化 | Docker |
+| 监控方向 | Prometheus |
+| 云原生方向 | Kubernetes |
+| 智能分析方向 | LLM、Agent |
+
+---
+
+## 3. 当前已实现功能
+
+### 3.1 网络设备数据采集
+
+已实现通过 Python 登录网络设备，采集基础网络状态信息，包括但不限于：
+
+- 设备接口状态；
+- 接口 IP 信息；
+- 设备运行状态；
+- 网络连通性相关信息；
+- 后续可扩展 ACL、OSPF、路由表等信息采集。
+
+当前采集逻辑主要面向 EVE-NG 中的 Cisco 模拟设备，用于构建可控的网络异常实验环境。
+
+---
+
+### 3.2 样本数据构建
+
+项目已开始将网络采集结果转换为结构化样本，用于模型训练和推理。
+
+当前样本数据以 JSONL 形式保存，示例路径：
+
+```text
+data/samples/labeled_events.jsonl

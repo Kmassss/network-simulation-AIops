@@ -37,6 +37,10 @@ LABEL_MAP = {
     "udp_burst": 4,
 }
 
+#定义错误
+class BusyError(Exception):
+    pass
+
 #定义模型
 class TrafficClassifier(nn.Module):
     def __init__(self, input_dim, num_classes):
