@@ -42,9 +42,6 @@ def task_handler(
                         raise BusyError("training task existing")
                 res = func(session_id,*args,**kwargs)
 
-            except BusyError:
-                raise
-
             except Exception as e:
                 send_task_event(
                     session_id=session_id,
