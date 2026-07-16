@@ -137,89 +137,93 @@ aiops.agent.analysis
 ## 4. 项目整体架构
 
 当前设计架构如下：
-
-|EVE-NG / Cisco Devices|
-|        ||
-|        | Netmiko|
-|        v|
-|Network Collector|
-|        ||
-|        | structured events|
-|        v|
-|Sample Builder|
-|        ||
-|        | JSONL / Features|
-|        v|
-|PyTorch Model|
-|        ||
-|        | train / predict|
-|        v|
-|Flask API|
-|        ||
-|        | async task|
-|        v|
-|Process Pool / Lock|
-|        ||
-|        | result event|
-|        v|
-|Kafka|
-|        ||
-|        v|
-|Consumer / Agent / Result Handler|
+```text
+EVE-NG / Cisco Devices
+        |
+        | Netmiko
+        v
+Network Collector
+        |
+        | structured events
+        v
+Sample Builder
+        |
+        | JSONL / Features
+        v
+PyTorch Model
+        |
+        | train / predict
+        v
+Flask API
+        |
+        | async task
+        v
+Process Pool / Lock
+        |
+        | result event
+        v
+Kafka
+        |
+        v
+Consumer / Agent / Result Handler
+```
 
 后续扩展架构：
-
-|rometheus / Kubernetes Metrics|
-|        ||
-|        v|
-|AIOps Feature Pipeline|
-|        ||
-|        v|
-|ML Model + LLM Agent|
-|        ||
-|        v|
-|Root Cause Analysis / Suggestion|
+```text
+Prometheus / Kubernetes Metrics
+        |
+        v
+AIOps Feature Pipeline
+        |
+        v
+ML Model + LLM Agent
+        |
+        v
+Root Cause Analysis / Suggestion
+```
 --
 ## 5. 项目目录结构
 
 当前建议目录结构如下：
 
-|network-simulation-AIOps/|
-|├── app/|
-|│   ├── __init__.py|
-|│   ├── blueprints/|
-|│   │   └── inference_bp.py|
-|│   ├── services/|
-|│   │   ├── train_service.py|
-|│   │   ├── predict_service.py|
-|│   │   ├── kafka_service.py|
-|│   │   └── lock_service.py|
-|│   └── utils/|
-|│|
-|├── collector/|
-|│   ├── device_collector.py|
-|│   └── parser.py|
-|│|
-|├── config/|
-|│   ├── deviceConf.example.yaml|
-|│   └── settings.example.yaml|
-|│|
-|├── data/|
-|│   └── samples/|
-|│       └── labeled_events.jsonl|
-|│|
-|├── models/|
-|│   └── README.md|
-|│|
-|├── scripts/|
-|│   ├── run_collector.py|
-|│   ├── train_model.py|
-|│   └── predict.py|
-|│|
-|├── tests/|
-|│|
-|├── Dockerfile|
-|├── docker-compose.yml|
-|├── requirements.txt|
-|├── README.md|
-|└── .gitignore|
+```text
+network-simulation-AIOps/
+├── app/
+│   ├── __init__.py
+│   ├── blueprints/
+│   │   └── inference_bp.py
+│   ├── services/
+│   │   ├── train_service.py
+│   │   ├── predict_service.py
+│   │   ├── kafka_service.py
+│   │   └── lock_service.py
+│   └── utils/
+│
+├── collector/
+│   ├── device_collector.py
+│   └── parser.py
+│
+├── config/
+│   ├── deviceConf.example.yaml
+│   └── settings.example.yaml
+│
+├── data/
+│   └── samples/
+│       └── labeled_events.jsonl
+│
+├── models/
+│   └── README.md
+│
+├── scripts/
+│   ├── run_collector.py
+│   ├── train_model.py
+│   └── predict.py
+│
+├── tests/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
